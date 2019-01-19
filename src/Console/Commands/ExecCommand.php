@@ -13,7 +13,7 @@ class ExecCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sql:exec {file}';
+    protected $signature = 'sql:exec {file_name}';
 
     /**
      * The console command description.
@@ -39,7 +39,7 @@ class ExecCommand extends Command
      */
     public function handle()
     {
-        $file = $this->argument('file');
+        $file = $this->argument('file_name');
         $sqlFolder = "database/sqls";
         $filePath = base_path() . '/' . trim($sqlFolder, '/') . '/' . $file . '.sql';
         try {
