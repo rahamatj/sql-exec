@@ -5,6 +5,7 @@ namespace RahamatJahan\SqlExec;
 use Illuminate\Support\ServiceProvider;
 use RahamatJahan\SqlExec\Console\Commands\ExecCommand;
 use RahamatJahan\SqlExec\Console\Commands\ShowCommand;
+use RahamatJahan\SqlExec\Console\Commands\DropCommand;
 use RahamatJahan\SqlExec\Console\Commands\TablesCommand;
 use RahamatJahan\SqlExec\Console\Commands\DescribeCommand;
 
@@ -43,11 +44,16 @@ class SqlExecServiceProvider extends ServiceProvider
             return new DescribeCommand;
         });
 
+        $this->app->singleton('command.drop', function () {
+            return new DropCommand;
+        });
+
         $this->commands([
             'command.exec',
             'command.show',
             'command.tables',
-            'command.describe'
+            'command.describe',
+            'command.drop'
         ]);
     }
 }

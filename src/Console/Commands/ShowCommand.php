@@ -48,7 +48,9 @@ class ShowCommand extends Command
             $table->print($collection);
             $this->line('');
         } catch(\Exception $e) {
-            $this->error($e->getMessage());
+            $this->line('');
+            $this->error("Error: " . $e->getMessage());
+            $this->line('');
         }
     }
 }

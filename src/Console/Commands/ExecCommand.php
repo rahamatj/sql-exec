@@ -20,7 +20,7 @@ class ExecCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Execute .sql files';
+    protected $description = 'Execute a .sql file';
 
     /**
      * Create a new command instance.
@@ -47,7 +47,7 @@ class ExecCommand extends Command
             $statements = array_filter(array_map('trim', explode(';', $sql)));
             foreach ($statements as $statement) {
                 try {
-                    $this->info("Executing query: ");
+                    $this->info("Executing query ... ");
                     $this->line('-----------------------------');
                     $this->comment($statement);
                     $this->line('-----------------------------');
@@ -60,7 +60,9 @@ class ExecCommand extends Command
                         $this->line('');
                     }
                 } catch(\Exception $e) {
+                    $this->line('');
                     $this->error("Error: " . $e->getMessage());
+                    $this->line('');
                 }
             }
         } catch(\Exception $e) {
