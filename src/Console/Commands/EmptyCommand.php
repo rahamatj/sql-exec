@@ -2,10 +2,10 @@
 
 namespace RahamatJahan\SqlExec\Console\Commands;
 
-use DB;
-use Illuminate\Console\Command;
+use RahamatJahan\SqlExec\Console\SqlCommand;
+use RahamatJahan\SqlExec\Exceptions\SqlExecException;
 
-class EmptyCommand extends Command
+class EmptyCommand extends SqlCommand
 {
     /**
      * The name and signature of the console command.
@@ -41,15 +41,10 @@ class EmptyCommand extends Command
         $tableName = $this->argument('table_name');
 
         try {
-            $this->line('');
-            $this->info("Emptying {$tableName} table ...");
-            DB::select("DELETE FROM {$tableName}");
-            $this->info("Deleted all rows from {$tableName} table!");
-            $this->line('');
-        } catch(\Exception $e) {
-            $this->line('');
-            $this->error("Error: " . $e->getMessage());
-            $this->line('');
+            $this->empty($tableName);
+            $this->show($tableName);
+        } catch(SqlExecException $e) {
+            $this->showErrorMessage($e);
         }
     }
 }

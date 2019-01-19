@@ -2,12 +2,10 @@
 
 namespace RahamatJahan\SqlExec\Console\Commands;
 
-use DB;
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Helper\Table;
-use RahamatJahan\SqlExec\Console\Helper\Collection;
+use RahamatJahan\SqlExec\Console\SqlCommand;
+use RahamatJahan\SqlExec\Exceptions\SqlExecException;
 
-class ExecCommand extends Command
+class ExecCommand extends SqlCommand
 {
     /**
      * The name and signature of the console command.
@@ -43,38 +41,11 @@ class ExecCommand extends Command
         $file = $this->argument('file_name');
         $sqlFolder = "database/sqls";
         $filePath = base_path() . '/' . trim($sqlFolder, '/') . '/' . $file . '.sql';
+        
         try {
-            $sql = file_get_contents($filePath);
-            $statements = array_filter(array_map('trim', explode(';', $sql)));
-            foreach ($statements as $statement) {
-                try {
-                    $this->line('');
-                    $this->info("Executing query ... ");
-                    $this->line('-----------------------------');
-                    $this->comment($statement);
-                    $this->line('-----------------------------');
-                    $collection = Collection::mapObjectsToArrays(
-                        DB::select($statement)
-                    );
-                    $this->info("Query executed successfully!");
-                    $this->line('');
-                    if($collection) {
-                        $table = new Table($this->output);
-                        $table->setHeaders(
-                                    array_keys($collection[0])
-                                )
-                                ->setRows($collection);
-                        $table->render();
-                        $this->line('');
-                    }
-                } catch(\Exception $e) {
-                    $this->line('');
-                    $this->error("Error: " . $e->getMessage());
-                    $this->line('');
-                }
-            }
-        } catch(\Exception $e) {
-            $this->error("File {$file} not found in {$sqlFolder} folder!");
+            $this->exec($filePath);
+        } catch(SqlExecException $e) {
+            $this->showErrorMessage($e);
         }
     }
 }

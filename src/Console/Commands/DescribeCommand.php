@@ -2,12 +2,10 @@
 
 namespace RahamatJahan\SqlExec\Console\Commands;
 
-use DB;
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Helper\Table;
-use RahamatJahan\SqlExec\Console\Helper\Collection;
+use RahamatJahan\SqlExec\Console\SqlCommand;
+use RahamatJahan\SqlExec\Exceptions\SqlExecException;
 
-class DescribeCommand extends Command
+class DescribeCommand extends SqlCommand
 {
     /**
      * The name and signature of the console command.
@@ -43,27 +41,9 @@ class DescribeCommand extends Command
         $tableName = $this->argument('table_name');
 
         try {
-            $contents = Collection::mapObjectsToArrays(
-                            DB::select("DESCRIBE ${tableName}")
-                        );
-
-            $table = new Table($this->output);
-            $table->setHeaders([
-                        'Field',
-                        'Type',
-                        'Null',
-                        'Key',
-                        'Default',
-                        'Extra'
-                    ])
-                    ->setRows($contents);
-            $this->line('');
-            $table->render();
-            $this->line('');
-        } catch(\Exception $e) {
-            $this->line('');
-            $this->error("Error: " . $e->getMessage());
-            $this->line('');
+           $this->describe($tableName);
+        } catch(SqlExecException $e) {
+            $this->showErrorMessage($e);
         }
     }
 }

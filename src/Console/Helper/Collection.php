@@ -14,4 +14,10 @@ class Collection {
             return $object->{$property};
         }, $collection);
     }
+
+    public static function mapArraysToKeyValues($array, $key) {
+        return array_map(function($element) use($key) {
+            return $element[$key];
+        }, $array);
+    }
 }

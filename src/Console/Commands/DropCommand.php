@@ -2,10 +2,10 @@
 
 namespace RahamatJahan\SqlExec\Console\Commands;
 
-use DB;
-use Illuminate\Console\Command;
+use RahamatJahan\SqlExec\Console\SqlCommand;
+use RahamatJahan\SqlExec\Exceptions\SqlExecException;
 
-class DropCommand extends Command
+class DropCommand extends SqlCommand
 {
     /**
      * The name and signature of the console command.
@@ -41,15 +41,10 @@ class DropCommand extends Command
         $tableName = $this->argument('table_name');
 
         try {
-            $this->line('');
-            $this->info("Dropping {$tableName} table ...");
-            DB::select("DROP TABLE {$tableName}");
-            $this->info("{$tableName} table dropped!");
-            $this->line('');
-        } catch (\Exception $e) {
-            $this->line('');
-            $this->error("Error: " . $e->getMessage());
-            $this->line('');
+            $this->drop($tableName);
+            $this->tables();
+        } catch (SqlExecException $e) {
+            $this->showErrorMessage($e);
         }
     }
 }

@@ -3,18 +3,18 @@
 namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\SqlCommand;
 use RahamatJahan\SqlExec\Console\Helper\Collection;
+use RahamatJahan\SqlExec\Exceptions\SqlExecException;
 
-class TablesCommand extends Command
+class TablesCommand extends SqlCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sql:tables';
+    protected $signature = 'sql:tables {--drop} {--empty}';
 
     /**
      * The console command description.
@@ -40,24 +40,38 @@ class TablesCommand extends Command
      */
     public function handle()
     {
+        $databaseName = config('database.connections.mysql.database');
         try {
-            $tables = Collection::mapObjectsToArrays(
-                        DB::select("SHOW TABLES")
-                    );
-            $databaseName = config('database.connections.mysql.database');
-            
-            $table = new Table($this->output);
-            $table->setHeaders([
-                        "Tables in {$databaseName}"
-                    ])
-                    ->setRows($tables);
-            $this->line('');
-            $table->render();
-            $this->line('');
-        } catch(\Exception $e) {
-            $this->line('');
-            $this->error("Error: " . $e->getMessage());
-            $this->line('');
+            $tableNames = Collection::mapObjectsToPropertyValues(
+                DB::select("SHOW TABLES"),
+                "Tables_in_" . $databaseName
+            );
+
+            if($this->option('drop')) {
+                foreach($tableNames as $tableName) {
+                    try {
+                        $this->drop($tableName);
+                    } catch (SqlExecException $e) {
+                        $this->showErrorMessage($e);
+                    }
+                }
+            } else if($this->option('empty')) {
+                foreach($tableNames as $tableName) {
+                    try {
+                        $this->empty($tableName);
+                    } catch(SqlExecException $e) {
+                        $this->showErrorMessage($e);
+                    }
+                }
+            } else {
+                try {
+                    $this->tables();
+                } catch(SqlExecException $e) {
+                    $this->showErrorMessage($e);
+                }
+            }
+        } catch(SqlExecException $e) {
+            $this->showErrorMessage($e);
         }
     }
 }
