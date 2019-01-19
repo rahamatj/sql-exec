@@ -6,21 +6,21 @@ use DB;
 use Illuminate\Console\Command;
 use Rahamat\SqlExec\Console\Helper\Table;
 
-class ShowCommand extends Command
+class TablesCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sql:show {table_name}';
+    protected $signature = 'sql:tables';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Show table contents';
+    protected $description = 'Show all tables in the database';
 
     /**
      * Create a new command instance.
@@ -39,13 +39,12 @@ class ShowCommand extends Command
      */
     public function handle()
     {
-        $tableName = $this->argument('table_name');
         try {
-            $collection = DB::select("SELECT * FROM {$tableName}");
+            $tables = DB::select("SHOW TABLES");
 
             $table = new Table($this->output);
             $this->line('');
-            $table->print($collection);
+            $table->print($tables);
             $this->line('');
         } catch(\Exception $e) {
             $this->error($e->getMessage());
