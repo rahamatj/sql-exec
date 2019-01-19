@@ -14,7 +14,9 @@ class TablesCommand extends SqlCommand
      *
      * @var string
      */
-    protected $signature = 'sql:tables {--drop} {--empty}';
+    protected $signature = 'sql:tables
+                            {--d|drop : Drop all tables from database}
+                            {--e|empty : Empty all tables}';
 
     /**
      * The console command description.
