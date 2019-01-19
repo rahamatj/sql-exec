@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Rahamat\SqlExec\Console\Commands\ExecCommand;
 use Rahamat\SqlExec\Console\Commands\ShowCommand;
 use Rahamat\SqlExec\Console\Commands\TablesCommand;
+use Rahamat\SqlExec\Console\Commands\DescribeCommand;
 
 class SqlExecServiceProvider extends ServiceProvider
 {
@@ -38,23 +39,15 @@ class SqlExecServiceProvider extends ServiceProvider
             return new TablesCommand;
         });
 
+        $this->app->singleton('command.describe', function () {
+            return new DescribeCommand;
+        });
+
         $this->commands([
             'command.exec',
             'command.show',
-            'command.tables'
+            'command.tables',
+            'command.describe'
         ]);
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            'command.exec',
-            'command.show'
-        ];
     }
 }
