@@ -1,6 +1,6 @@
 <?php
 
-namespace Rahamat\SqlExec\Console\Helper;
+namespace RahamatJahan\SqlExec\Console\Helper;
 
 use Symfony\Component\Console\Helper\Table as SymfonyTable;
 

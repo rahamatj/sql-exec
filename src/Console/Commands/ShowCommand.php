@@ -1,10 +1,10 @@
 <?php
 
-namespace Rahamat\SqlExec\Console\Commands;
+namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use Rahamat\SqlExec\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Table;
 
 class ShowCommand extends Command
 {
@@ -20,7 +20,7 @@ class ShowCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Show table contents';
+    protected $description = 'Show table rows';
 
     /**
      * Create a new command instance.

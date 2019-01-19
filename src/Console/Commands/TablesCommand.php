@@ -1,10 +1,10 @@
 <?php
 
-namespace Rahamat\SqlExec\Console\Commands;
+namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use Rahamat\SqlExec\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Table;
 
 class TablesCommand extends Command
 {
@@ -20,7 +20,7 @@ class TablesCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Show all tables in the database';
+    protected $description = 'List all tables in the database';
 
     /**
      * Create a new command instance.

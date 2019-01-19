@@ -1,5 +1,5 @@
 {
-    "name": "rahamat/sql-exec",
+    "name": "rahamatjahan/sql-exec",
     "description": "A laravel package that adds an artisan command to execute .sql files",
     "require": {},
     "license": "MIT",
@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Rahamat\\SqlExec\\": "src/"
+            "RahamatJahan\\SqlExec\\": "src/"
         }
     }
 }

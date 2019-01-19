@@ -1,12 +1,12 @@
 <?php
 
-namespace Rahamat\SqlExec;
+namespace RahamatJahan\SqlExec;
 
 use Illuminate\Support\ServiceProvider;
-use Rahamat\SqlExec\Console\Commands\ExecCommand;
-use Rahamat\SqlExec\Console\Commands\ShowCommand;
-use Rahamat\SqlExec\Console\Commands\TablesCommand;
-use Rahamat\SqlExec\Console\Commands\DescribeCommand;
+use RahamatJahan\SqlExec\Console\Commands\ExecCommand;
+use RahamatJahan\SqlExec\Console\Commands\ShowCommand;
+use RahamatJahan\SqlExec\Console\Commands\TablesCommand;
+use RahamatJahan\SqlExec\Console\Commands\DescribeCommand;
 
 class SqlExecServiceProvider extends ServiceProvider
 {

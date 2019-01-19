@@ -1,10 +1,10 @@
 <?php
 
-namespace Rahamat\SqlExec\Console\Commands;
+namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use Rahamat\SqlExec\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Table;
 
 class ExecCommand extends Command
 {

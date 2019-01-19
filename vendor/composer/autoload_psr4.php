@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Rahamat\\SqlExec\\' => array($baseDir . '/src'),
+    'RahamatJahan\\SqlExec\\' => array($baseDir . '/src'),
 );

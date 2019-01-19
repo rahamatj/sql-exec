@@ -1,10 +1,10 @@
 <?php
 
-namespace Rahamat\SqlExec\Console\Commands;
+namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use Rahamat\SqlExec\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Table;
 
 class DescribeCommand extends Command
 {
@@ -20,7 +20,7 @@ class DescribeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Describe table structure';
+    protected $description = 'Show table structure';
 
     /**
      * Create a new command instance.
