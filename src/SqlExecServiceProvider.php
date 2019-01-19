@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use RahamatJahan\SqlExec\Console\Commands\ExecCommand;
 use RahamatJahan\SqlExec\Console\Commands\ShowCommand;
 use RahamatJahan\SqlExec\Console\Commands\DropCommand;
+use RahamatJahan\SqlExec\Console\Commands\EmptyCommand;
 use RahamatJahan\SqlExec\Console\Commands\TablesCommand;
 use RahamatJahan\SqlExec\Console\Commands\DescribeCommand;
 
@@ -48,12 +49,17 @@ class SqlExecServiceProvider extends ServiceProvider
             return new DropCommand;
         });
 
+        $this->app->singleton('command.empty', function () {
+            return new EmptyCommand;
+        });
+
         $this->commands([
             'command.exec',
             'command.show',
             'command.tables',
             'command.describe',
-            'command.drop'
+            'command.drop',
+            'command.empty'
         ]);
     }
 }

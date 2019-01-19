@@ -4,7 +4,8 @@ namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use RahamatJahan\SqlExec\Console\Helper\Table;
+use Symfony\Component\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Collection;
 
 class ExecCommand extends Command
 {
@@ -47,16 +48,23 @@ class ExecCommand extends Command
             $statements = array_filter(array_map('trim', explode(';', $sql)));
             foreach ($statements as $statement) {
                 try {
+                    $this->line('');
                     $this->info("Executing query ... ");
                     $this->line('-----------------------------');
                     $this->comment($statement);
                     $this->line('-----------------------------');
-                    $collection = DB::select($statement);
+                    $collection = Collection::mapObjectsToArrays(
+                        DB::select($statement)
+                    );
                     $this->info("Query executed successfully!");
                     $this->line('');
                     if($collection) {
                         $table = new Table($this->output);
-                        $table->print($collection);
+                        $table->setHeaders(
+                                    array_keys($collection[0])
+                                )
+                                ->setRows($collection);
+                        $table->render();
                         $this->line('');
                     }
                 } catch(\Exception $e) {

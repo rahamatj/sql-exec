@@ -4,7 +4,8 @@ namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use RahamatJahan\SqlExec\Console\Helper\Table;
+use Symfony\Component\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Collection;
 
 class TablesCommand extends Command
 {
@@ -40,11 +41,18 @@ class TablesCommand extends Command
     public function handle()
     {
         try {
-            $tables = DB::select("SHOW TABLES");
-
+            $tables = Collection::mapObjectsToArrays(
+                        DB::select("SHOW TABLES")
+                    );
+            $databaseName = config('database.connections.mysql.database');
+            
             $table = new Table($this->output);
+            $table->setHeaders([
+                        "Tables in {$databaseName}"
+                    ])
+                    ->setRows($tables);
             $this->line('');
-            $table->print($tables);
+            $table->render();
             $this->line('');
         } catch(\Exception $e) {
             $this->line('');

@@ -4,7 +4,8 @@ namespace RahamatJahan\SqlExec\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use RahamatJahan\SqlExec\Console\Helper\Table;
+use Symfony\Component\Console\Helper\Table;
+use RahamatJahan\SqlExec\Console\Helper\Collection;
 
 class ShowCommand extends Command
 {
@@ -41,11 +42,19 @@ class ShowCommand extends Command
     {
         $tableName = $this->argument('table_name');
         try {
-            $collection = DB::select("SELECT * FROM {$tableName}");
-
+            $collection = Collection::mapObjectsToArrays(
+                                DB::select("SELECT * FROM {$tableName}")
+                            );
+            $columns = Collection::mapObjectsToPropertyValues(
+                                DB::select("SHOW COLUMNS FROM {$tableName}"),
+                                'Field'
+                            );
+            
             $table = new Table($this->output);
+            $table->setHeaders($columns)
+                    ->setRows($collection);
             $this->line('');
-            $table->print($collection);
+            $table->render();
             $this->line('');
         } catch(\Exception $e) {
             $this->line('');
