@@ -16,7 +16,8 @@ class TablesCommand extends SqlCommand
      */
     protected $signature = 'sql:tables
                             {--d|drop : Drop all tables from database}
-                            {--e|empty : Empty all tables}';
+                            {--e|empty : Empty all tables}
+                            {--f|force : Disable foreign key checks while dropping tables}';
 
     /**
      * The console command description.
@@ -43,6 +44,8 @@ class TablesCommand extends SqlCommand
     public function handle()
     {
         $databaseName = config('database.connections.mysql.database');
+        $force = $this->option('force');
+
         try {
             $tableNames = Collection::mapObjectsToPropertyValues(
                 DB::select("SHOW TABLES"),
@@ -52,7 +55,11 @@ class TablesCommand extends SqlCommand
             if($this->option('drop')) {
                 foreach($tableNames as $tableName) {
                     try {
+                        if($force)
+                            DB::select("SET FOREIGN_KEY_CHECKS = 0");
                         $this->drop($tableName);
+                        if($force)
+                            DB::select("SET FOREIGN_KEY_CHECKS = 1");
                     } catch (SqlExecException $e) {
                         $this->showErrorMessage($e);
                     }
